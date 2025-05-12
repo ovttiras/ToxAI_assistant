@@ -527,7 +527,7 @@ class Med_chem_one():
         self.substructures_df = pd.read_csv(self.way_exp_data, sep="\s+")
         # Converting SMARTS substructures into RDKit molecules
         self.substructure_mols = [(row['name'], Chem.MolFromSmarts(row['smarts'])) for _, row in self.substructures_df.iterrows()]
-        if self.propetis=='tox_alerts_subst':
+        if self.propetis=='structural alerts':
             # Creating a topological fingerprint for the original molecule
             self.mol_fp = FingerprintMols.FingerprintMol(m)
         # A dictionary for found substructures with their atomic indexes
@@ -544,7 +544,7 @@ class Med_chem_one():
                     st.write(f"The found {self.propetis}: {name}")
                     # Calculating the Tanimoto coefficient
                     self.substructure_mol = Chem.MolFromSmarts(self.substructures_df[self.substructures_df['name'] == name]['smarts'].values[0])
-                    if self.propetis=='tox_alerts_subst':
+                    if self.propetis=='structural alerts':
                         self.sub_fp = FingerprintMols.FingerprintMol(self.substructure_mol)
                         self.tanimoto_similarity = DataStructs.TanimotoSimilarity(self.mol_fp, self.sub_fp)
                         st.write(f"Tanimoto coefficient: {self.tanimoto_similarity:.2f}")
@@ -585,6 +585,6 @@ if (files_option1  =='*CSV file containing SMILES' or files_option1=='MDL multip
         Oral.seach_predic_csv()
 if (files_option1 =='Draw the molecule and click the "Apply" button' or files_option1 =='SMILES')  and files_option2 =='Substructural search: PAINS, Brenk filters, structural alerts':
     if st.button('Run predictions!'):
-        Substructural_search_one=Med_chem_one('tox_alerts_subst', 'datasets/tox_alerts_list.csv')
+        Substructural_search_one=Med_chem_one('structural alerts', 'datasets/tox_alerts_list.csv')
         Brenk_SA=Med_chem_one('Brenk filter', 'datasets/unwanted_substructures.csv')
         Pains=Med_chem_one('PAINS', 'datasets/PAINS.csv')
