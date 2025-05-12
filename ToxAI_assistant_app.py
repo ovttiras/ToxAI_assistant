@@ -333,12 +333,15 @@ class Models():
         self.df = pd.read_csv(self.way_exp_data)
         self.res = (self.df.groupby("inchi").apply(lambda x: x.drop(columns="inchi").to_dict("records")).to_dict())
         # Calculate molecular descriptors
+        
+        st.write(len(self.descriprors[0]))
         self.f_vs = pd.DataFrame(self.descriprors).drop(['BCUT2D_MWHI', 'BCUT2D_CHGLO',
                                                          'BCUT2D_MWLOW', 'BCUT2D_LOGPHI',
                                                          'BCUT2D_LOGPLOW', 'BCUT2D_MRHI',
                                                          'BCUT2D_MRLOW', 'BCUT2D_CHGHI',
                                                           'MaxPartialCharge', 'MinPartialCharge',
                                                            'MaxAbsPartialCharge', 'MinAbsPartialCharge'], axis=1)
+        st.write(self.f_vs.shape) 
         self.f_vs= self.f_vs.to_numpy()
         self.X =sc.transform(self.f_vs)
         self.zf = zipfile.ZipFile(self.descripror_way_zip) 
